@@ -23,7 +23,7 @@ def setup_db(app, database_path=database_path):
 Question
 
 '''
-class Question(db.Model):  
+class Question(db.Model):
   __tablename__ = 'questions'
 
   id = Column(Integer, primary_key=True)
@@ -31,23 +31,28 @@ class Question(db.Model):
   answer = Column(String)
   category = Column(String)
   difficulty = Column(Integer)
-
   def __init__(self, question, answer, category, difficulty):
     self.question = question
     self.answer = answer
     self.category = category
     self.difficulty = difficulty
 
+  def select(query):
+      return db.session.execute(query)
+
+
+
   def insert(self):
     db.session.add(self)
     db.session.commit()
-  
+
   def update(self):
     db.session.commit()
 
   def delete(self):
     db.session.delete(self)
     db.session.commit()
+
 
   def format(self):
     return {
@@ -62,7 +67,7 @@ class Question(db.Model):
 Category
 
 '''
-class Category(db.Model):  
+class Category(db.Model):
   __tablename__ = 'categories'
 
   id = Column(Integer, primary_key=True)

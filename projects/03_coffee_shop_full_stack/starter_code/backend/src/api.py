@@ -27,6 +27,15 @@ CORS(app)
     returns status code 200 and json {"success": True, "drinks": drinks} where drinks is the list of drinks
         or appropriate status code indicating reason for failure
 '''
+@app.route('/drinks')
+def get_drinks():
+    drinks  = Drink.query.all();
+    if len(drinks) < 1:
+        abort(404)
+    return jsonify({
+    "success": True,
+    "drinks": drinks
+    })
 
 
 '''
@@ -37,6 +46,18 @@ CORS(app)
     returns status code 200 and json {"success": True, "drinks": drinks} where drinks is the list of drinks
         or appropriate status code indicating reason for failure
 '''
+@app.route('/drinks-detail')
+def get_drinks_detail():
+    drinks = Drink.query.all()
+    drinks_detail = []
+    for drink in drinks:
+        drinks_detail.append(drink.long())
+    if len(drinks_detail) < 1:
+        abort(404)
+    return jsonify({
+    "Success": True,
+    "drinks": drinks_detail
+    })
 
 
 '''
@@ -48,6 +69,11 @@ CORS(app)
     returns status code 200 and json {"success": True, "drinks": drink} where drink an array containing only the newly created drink
         or appropriate status code indicating reason for failure
 '''
+@app.route('/drinks')
+def post_drink():
+    data = request.get_json()
+    data1 = request.args
+    print(data)
 
 
 '''
@@ -82,7 +108,7 @@ Example error handling for unprocessable entity
 @app.errorhandler(422)
 def unprocessable(error):
     return jsonify({
-                    "success": False, 
+                    "success": False,
                     "error": 422,
                     "message": "unprocessable"
                     }), 422
@@ -91,7 +117,7 @@ def unprocessable(error):
 @TODO implement error handlers using the @app.errorhandler(error) decorator
     each error handler should return (with approprate messages):
              jsonify({
-                    "success": False, 
+                    "success": False,
                     "error": 404,
                     "message": "resource not found"
                     }), 404
@@ -100,11 +126,11 @@ def unprocessable(error):
 
 '''
 @TODO implement error handler for 404
-    error handler should conform to general task above 
+    error handler should conform to general task above
 '''
 
 
 '''
 @TODO implement error handler for AuthError
-    error handler should conform to general task above 
+    error handler should conform to general task above
 '''
